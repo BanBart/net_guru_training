@@ -19,8 +19,9 @@ class ProductsController < ApplicationController
 
   def create
     self.product = Product.new(product_params)
-
+    
     if product.save
+      product.average_rating = 8
       category.products << product
       redirect_to category_product_url(category, product), notice: 'Product was successfully created.'
     else

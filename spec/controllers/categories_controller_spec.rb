@@ -6,7 +6,7 @@ describe CategoriesController do
 
   let(:valid_session) { {} }
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { build(:user) }
 
   before do
     sign_in user
