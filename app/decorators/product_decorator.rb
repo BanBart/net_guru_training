@@ -9,5 +9,9 @@ class ProductDecorator < Draper::Decorator
   #       object.created_at.strftime("%a %m/%d/%y")
   #     end
   #   end
+  
+  def user_owner?
+    product.user == current_user ? true : false 
+  end
 
 end
