@@ -18,4 +18,7 @@ before_action :configure_permitted_parameters, if: :devise_controller?
       redirect_to new_user_session_path
     end
   end
+  
+
+
 end

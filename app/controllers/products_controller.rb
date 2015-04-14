@@ -1,10 +1,11 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy, :create]
+  before_action :authorize_owner!, only: [:edit, :update, :destroy]
   expose(:category)
   expose(:products)
   expose(:product)
   expose(:review) { Review.new }
   expose_decorated(:reviews, ancestor: :product)
-
   def index
   end
 
@@ -21,7 +22,6 @@ class ProductsController < ApplicationController
     self.product = Product.new(product_params)
     
     if product.save
-      product.average_rating = 8
       category.products << product
       redirect_to category_product_url(category, product), notice: 'Product was successfully created.'
     else
@@ -48,4 +48,12 @@ class ProductsController < ApplicationController
   def product_params
     params.require(:product).permit(:title, :description, :price, :category_id)
   end
+  
+  def authorize_owner!
+    unless product.user == current_user
+      redirect_to category_product_url(category, product)
+      flash[:error] = 'You are not allowed to edit this product.'
+    end
+  end
+  
 end
